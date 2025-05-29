@@ -24,6 +24,7 @@ function DisplayMessages() {
   const { uid } = useParams()
 
   // Set logged in user details
+  // console.log(messages)
   useEffect(() => {
     if (!claims) return
     setLoggedInId(claims?.user_id)
@@ -37,7 +38,10 @@ function DisplayMessages() {
     if (!loggedInId) return
 
     const database = getDatabase()
-    const userConversationsRef = ref(database, `users/${loggedInId}/conversations`)
+    const userConversationsRef = ref(
+      database,
+      `users/${loggedInId}/conversations`
+    )
 
     const unsubscribe = onValue(userConversationsRef, (snapshot) => {
       if (snapshot.exists()) {
@@ -48,7 +52,9 @@ function DisplayMessages() {
         }))
 
         // Sort conversations by most recent message
-        conversationsList.sort((a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp)
+        conversationsList.sort(
+          (a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp
+        )
 
         setConversations(conversationsList)
         setLoading(false)
@@ -71,7 +77,10 @@ function DisplayMessages() {
     if (!selectedConversation || !loggedInId) return
 
     const database = getDatabase()
-    const messagesRef = ref(database, `conversations/${selectedConversation}/messages`)
+    const messagesRef = ref(
+      database,
+      `conversations/${selectedConversation}/messages`
+    )
 
     const unsubscribe = onValue(messagesRef, (snapshot) => {
       if (snapshot.exists()) {
@@ -126,23 +135,23 @@ function DisplayMessages() {
     })
   }
 
-  if (loading) {
-    return <div className="loading-messages">Loading conversations...</div>
-  }
+  // if (loading) {
+  //   return <div className="loading-messages">Loading conversations...</div>
+  // }
 
   return (
-    <div className="display-messages-container">
-      <div className="messages-header">
+    <div className='display-messages-container'>
+      <div className='messages-header'>
         <p>Your Messages!</p>
       </div>
 
-      <div className="messages-content">
-        <div className="conversations-sidebar">
+      <div className='messages-content'>
+        <div className='conversations-sidebar'>
           <h3>Conversations</h3>
           {conversations.length === 0 ? (
-            <p className="no-conversations">No conversations yet</p>
+            <p className='no-conversations'>No conversations yet</p>
           ) : (
-            <ul className="conversations-list">
+            <ul className='conversations-list'>
               {conversations.map((convo) => (
                 <li
                   key={convo.id}
@@ -151,13 +160,15 @@ function DisplayMessages() {
                   }`}
                   onClick={() => handleSelectConversation(convo.id)}
                 >
-                  <div className="conversation-contact">{convo.withName}</div>
-                  <div className="conversation-preview">{convo.lastMessage}</div>
-                  <div className="conversation-time">
+                  <div className='conversation-contact'>{convo.withName}</div>
+                  <div className='conversation-preview'>
+                    {convo.lastMessage}
+                  </div>
+                  <div className='conversation-time'>
                     {formatTimestamp(convo.lastMessageTimestamp)}
                   </div>
                   {convo.unreadCount > 0 && (
-                    <div className="unread-badge">{convo.unreadCount}</div>
+                    <div className='unread-badge'>{convo.unreadCount}</div>
                   )}
                 </li>
               ))}
@@ -165,19 +176,20 @@ function DisplayMessages() {
           )}
         </div>
 
-        <div className="messages-view">
+        <div className='messages-view'>
           {selectedConversation ? (
             <>
-              <div className="selected-conversation-header">
+              <div className='selected-conversation-header'>
                 <h3>
                   {selectedConversation &&
-                    conversations.find((c) => c.id === selectedConversation)?.withName}
+                    conversations.find((c) => c.id === selectedConversation)
+                      ?.withName}
                 </h3>
               </div>
 
-              <div className="messages-list">
+              <div className='messages-list'>
                 {messages.length === 0 ? (
-                  <p className="no-messages">No messages yet</p>
+                  <p className='no-messages'>No messages yet</p>
                 ) : (
                   messages.map((msg) => (
                     <div
@@ -186,11 +198,13 @@ function DisplayMessages() {
                         msg.senderId === loggedInId ? 'sent' : 'received'
                       }`}
                     >
-                      <div className="message-content">{msg.message}</div>
-                      <div className="message-time">
+                      <div className='message-content'>{msg.message}</div>
+                      <div className='message-time'>
                         {formatTimestamp(msg.timestamp)}
                         {msg.senderId === loggedInId && (
-                          <span className="read-status">{msg.read ? ' ✓✓' : ' ✓'}</span>
+                          <span className='read-status'>
+                            {msg.read ? ' ✓✓' : ' ✓'}
+                          </span>
                         )}
                       </div>
                     </div>
@@ -199,7 +213,7 @@ function DisplayMessages() {
               </div>
             </>
           ) : (
-            <div className="no-conversation-selected">
+            <div className='no-conversation-selected'>
               <p>Select a conversation to view messages</p>
             </div>
           )}

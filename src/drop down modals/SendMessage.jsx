@@ -21,14 +21,12 @@ function SendMessage() {
   const { claims } = useAuthStatusTwo()
 
   // getAllAgentsForChat()
-  console.log(claims)
 
   useEffect(() => {
     if (!claims && !claims?.claims) return
     const getAgentData = async () => {
       const res = await getAllAgentsForChat(claims?.claims?.orgId)
       setOptions(res)
-      console.log(res)
 
       const senderData = {
         name: claims?.name,
@@ -61,7 +59,7 @@ function SendMessage() {
     const agentId = e.target.selectedOptions[0].dataset.id
     setRecipientId(agentId)
     setRecipientName(agentName)
-    console.log({ agentName, agentId })
+    // console.log({ agentName, agentId })
   }
 
   const handleSubmit = async (e) => {
@@ -78,7 +76,9 @@ function SendMessage() {
     const conversationId = [sendingAgent.id, recipientId].sort().join('_')
 
     // Generate a unique message ID with push()
-    const newMessageRef = push(ref(database, `conversations/${conversationId}/messages`))
+    const newMessageRef = push(
+      ref(database, `conversations/${conversationId}/messages`)
+    )
 
     // Set message data
     await set(newMessageRef, {
@@ -102,13 +102,16 @@ function SendMessage() {
     })
 
     // Add this conversation to each user's conversations list
-    await set(ref(database, `users/${sendingAgent.id}/conversations/${conversationId}`), {
-      with: recipientId,
-      withName: recipientName, // convo with
-      lastMessage: message,
-      lastMessageTimestamp: Date.now(),
-      unreadCount: 0,
-    })
+    await set(
+      ref(database, `users/${sendingAgent.id}/conversations/${conversationId}`),
+      {
+        with: recipientId,
+        withName: recipientName, // convo with
+        lastMessage: message,
+        lastMessageTimestamp: Date.now(),
+        unreadCount: 0,
+      }
+    )
 
     // First, try to get the current unread count
     const recipientConvoRef = ref(
@@ -151,16 +154,18 @@ function SendMessage() {
   }
 
   return (
-    <div className="send-msg-modal">
-      <div className="order-edit-modal">
-        <p className="messenger-heading-text">Send a Message to another agent!</p>
+    <div className='send-msg-modal'>
+      <div className='order-edit-modal'>
+        <p className='messenger-heading-text'>
+          Send a Message to another agent!
+        </p>
         <form onSubmit={handleSubmit}>
-          <div className="select-possition-container">
+          <div className='select-possition-container'>
             <select
               onChange={(e) => handleSelect(e)}
-              className="select-agent"
-              name="cars"
-              id="agents"
+              className='select-agent'
+              name='cars'
+              id='agents'
             >
               <option>Choose Agent</option>
               {options?.map((item) => {
@@ -174,33 +179,33 @@ function SendMessage() {
                 )
               })}
             </select>
-            <div className="select-arrow">
-              <Arrow className="select-arrow" />
+            <div className='select-arrow'>
+              <Arrow className='select-arrow' />
             </div>
           </div>
 
           <input
-            className="email-form-input"
-            type="text"
-            id="from"
-            placeholder="Msg from"
+            className='email-form-input'
+            type='text'
+            id='from'
+            placeholder='Msg from'
             onChange={onMutate}
             value={sendingAgent?.name || ''}
             disabled={true}
           />
 
           <textarea
-            className="email-form-body"
-            placeholder="Enter Message"
-            id="msg"
+            className='email-form-body'
+            placeholder='Enter Message'
+            id='msg'
             onChange={onMutate}
             value={message}
           ></textarea>
-          <div className="email-btn-container">
-            <button className="send-email-btn">Send Message</button>
+          <div className='email-btn-container'>
+            <button className='send-email-btn'>Send Message</button>
           </div>
         </form>
-        <button onClick={handleCloseModal} className="close-email-modal-btn">
+        <button onClick={handleCloseModal} className='close-email-modal-btn'>
           X
         </button>
       </div>

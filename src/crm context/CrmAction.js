@@ -735,6 +735,7 @@ export async function getAllCustomersForProfilePageCompanyStats(
   }
 }
 
+// was used to fetch view message data in dashboard header
 export async function fetchAgentDataForProfileHeader(collectionName, params) {
   try {
     const collectionRef = collection(db, collectionName)
@@ -1281,7 +1282,7 @@ export async function getAllAgentsForChat(orgId) {
 
   const querySnapshot = await getDocs(q)
   querySnapshot.forEach((doc) => {
-    console.log(doc.id, ' => ', doc.data())
+    // console.log(doc.id, ' => ', doc.data())
     const dataObj = { id: doc.id, data: doc.data() }
     data.push(dataObj)
   })
