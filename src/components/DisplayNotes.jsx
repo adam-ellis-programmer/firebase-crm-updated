@@ -12,10 +12,16 @@ import { newNoteEntry, getCollectionNotes } from '../crm context/CrmAction'
 import DataSvgIcon from './DataSvgIcon'
 import Loader from '../assets/Loader'
 import { useAuthStatusTwo } from '../hooks/useAuthStatusTwo'
+import { useTestUserCheck } from '../hooks/useTestUserCheck'
 
 function DisplayNotes({ permissions }) {
+  const { checkTestUser } = useTestUserCheck()
   const hasPermission = (resource, action) => {
-    if (!permissions || !permissions[resource] || !permissions[resource][action]) {
+    if (
+      !permissions ||
+      !permissions[resource] ||
+      !permissions[resource][action]
+    ) {
       const msg = `You do not have ${action} permissions for ${resource} data`
       console.log(msg)
       toast.error(msg)
@@ -62,6 +68,11 @@ function DisplayNotes({ permissions }) {
   }
   const onSubmit = async (e) => {
     e.preventDefault()
+
+    if (checkTestUser()) {
+      console.log(checkTestUser())
+      return
+    }
     // FUNCT RET TRUE SO WE INVERT TO GET THE 'RETURN'
     if (!hasPermission('customers', 'create')) return
     const noteData = {
@@ -101,6 +112,10 @@ function DisplayNotes({ permissions }) {
   }
 
   const onEdit = (id) => {
+    if (checkTestUser()) {
+      console.log(checkTestUser())
+      return
+    }
     if (!hasPermission('customers', 'update')) return
     toggleModal()
     setSearchParams((prevState) => {
@@ -115,26 +130,26 @@ function DisplayNotes({ permissions }) {
 
   return (
     <div>
-      <div className="form-container">
-        <form onSubmit={onSubmit} className="">
+      <div className='form-container'>
+        <form onSubmit={onSubmit} className=''>
           <textarea
-            className="note-input"
-            type="text"
-            id="noteText"
-            placeholder="Enter Note"
+            className='note-input'
+            type='text'
+            id='noteText'
+            placeholder='Enter Note'
             onChange={onChange}
             value={noteText}
           ></textarea>
 
-          <div className="page-btn-container">
-            <button className="booking-button" type="submit">
+          <div className='page-btn-container'>
+            <button className='booking-button' type='submit'>
               Enter Note
             </button>
           </div>
         </form>
       </div>
 
-      <div className="notes-display-div">
+      <div className='notes-display-div'>
         {/* prettier-ignore */}
         <ul>
           {notesData &&

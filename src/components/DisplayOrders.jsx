@@ -216,6 +216,10 @@ function DisplayOrders({ permissions }) {
   }
 
   const onEdit = (id) => {
+    if (checkTestUser()) {
+      console.log(checkTestUser())
+      return
+    }
     if (!hasPermission('customers', 'update')) return
 
     console.log(id)
@@ -240,7 +244,6 @@ function DisplayOrders({ permissions }) {
     console.log('returning...')
 
     if (checkTestUser()) {
-      console.log('test user ')
       console.log(checkTestUser())
       return
     }

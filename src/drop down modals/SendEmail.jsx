@@ -4,11 +4,14 @@ import CrmContext from '../crm context/CrmContext'
 import { submitEmail, getCustomerInfoForEmail } from '../crm context/CrmAction'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { getFunctions, httpsCallable } from 'firebase/functions'
+import { useTestUserCheck } from '../hooks/useTestUserCheck'
 
 // app password link
 // https://support.google.com/accounts/answer/185833?hl=en
 
 function SendEmail() {
+  const { checkTestUser } = useTestUserCheck()
+
   const params = useParams()
   const modal = useRef()
 
@@ -78,6 +81,11 @@ function SendEmail() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if (checkTestUser()) {
+      console.log(checkTestUser())
+      return
+    }
+
     const emailData = {
       from: form.agent,
       to: 'ellisadam88@gmail.com', // Use the form state variable directly
@@ -115,45 +123,45 @@ function SendEmail() {
   }
 
   return (
-    <div tabIndex={-1} ref={modal} className="order-edit-modal">
+    <div tabIndex={-1} ref={modal} className='order-edit-modal'>
       <form onSubmit={handleSubmit}>
         <input
-          className="email-form-input"
-          type="text"
-          id="emailAddress"
-          placeholder="Enter Email Address"
+          className='email-form-input'
+          type='text'
+          id='emailAddress'
+          placeholder='Enter Email Address'
           onChange={onMutate}
           value={emailAddress}
         />
         <input
-          className="email-form-input"
-          type="text"
-          id="emailSubject"
-          placeholder="Enter Subject"
+          className='email-form-input'
+          type='text'
+          id='emailSubject'
+          placeholder='Enter Subject'
           onChange={onMutate}
           value={emailSubject}
         />
         <input
-          className="email-form-input"
-          type="text"
-          id="emailFrom"
-          placeholder="Email from"
+          className='email-form-input'
+          type='text'
+          id='emailFrom'
+          placeholder='Email from'
           onChange={onMutate}
           value={agent}
         />
 
         <textarea
-          className="email-form-body"
-          placeholder="Enter Email"
-          id="emailBody"
+          className='email-form-body'
+          placeholder='Enter Email'
+          id='emailBody'
           value={emailBody}
           onChange={onMutate}
         ></textarea>
-        <div className="email-btn-container">
-          <button className="send-email-btn">Send Email</button>
+        <div className='email-btn-container'>
+          <button className='send-email-btn'>Send Email</button>
         </div>
       </form>
-      <button onClick={handleCloseModal} className="close-email-modal-btn">
+      <button onClick={handleCloseModal} className='close-email-modal-btn'>
         X
       </button>
     </div>
