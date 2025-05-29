@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import ComponentHeader from './ComponentHeader'
 import { getFunctions, httpsCallable } from 'firebase/functions'
 import { useAuthStatusTwo } from '../../hooks/useAuthStatusTwo'
-const DeleteAgent = ({ data }) => {
+const DeleteAgent = ({ data, checkTestUser }) => {
   // console.log(data)
   const { claims } = useAuthStatusTwo()
   // console.log(claims)
@@ -45,8 +45,10 @@ const DeleteAgent = ({ data }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (checkTestUser()) {
+      return
+    }
 
-    
     // getReports to data for id (sub)
     console.log(formData)
     // return
@@ -128,7 +130,7 @@ const DeleteAgent = ({ data }) => {
    */
   return (
     <div>
-      <form id="form" onSubmit={handleSubmit} className="admin-form">
+      <form id='form' onSubmit={handleSubmit} className='admin-form'>
         <ComponentHeader text={`delete agent`} />
         {formArr.slice(0, 1).map((item) => {
           const [key, value] = item
@@ -141,12 +143,12 @@ const DeleteAgent = ({ data }) => {
               placeholder={`Enter ${key}`}
               onChange={onChange}
               // added to stop duplicate on page
-              formId="delete-agent"
+              formId='delete-agent'
             />
           )
         })}
 
-        <div className="admin-btn-container">
+        <div className='admin-btn-container'>
           <button
             disabled={loading.delete}
             className={`${

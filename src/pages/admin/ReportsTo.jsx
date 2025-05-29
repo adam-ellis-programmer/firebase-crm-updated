@@ -5,7 +5,7 @@ import { useAuthStatusTwo } from '../../hooks/useAuthStatusTwo'
 import { getFunctions, httpsCallable } from 'firebase/functions'
 import SelectRowRepTo from './SelectRowRepTo'
 
-const ReportsTo = ({ data }) => {
+const ReportsTo = ({ data, checkTestUser }) => {
   const [agentsData, setAgentsData] = useState(null)
   const { claims } = useAuthStatusTwo()
   const orgId = claims?.claims?.orgId
@@ -71,6 +71,11 @@ const ReportsTo = ({ data }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (checkTestUser()) {
+      return
+    }
+
     setLoading(true)
     console.log(formData)
     // return
@@ -88,30 +93,30 @@ const ReportsTo = ({ data }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="admin-form">
+      <form onSubmit={handleSubmit} className='admin-form'>
         <ComponentHeader text={`change reports to`} />
 
         <SelectRowRepTo
           data={agentsData}
-          text="select agent"
+          text='select agent'
           labelText={'agent'}
           onChange={onChange}
-          name="agent"
+          name='agent'
           value={formData.agent?.name || ''} // Connect to state
-          id="agent-select"
+          id='agent-select'
         />
         <SelectRowRepTo
           data={data}
-          text="select manager"
+          text='select manager'
           labelText={'reports to'}
           onChange={onChange}
-          name="manager"
+          name='manager'
           value={formData.newReportsTo?.name || ''} // Connect to state
-          id="manager-select-manager"
+          id='manager-select-manager'
         />
 
-        <div className="admin-btn-container">
-          <button disabled={loading} className="admin-add-agent-btn">
+        <div className='admin-btn-container'>
+          <button disabled={loading} className='admin-add-agent-btn'>
             {loading ? 'changing ...' : 'change'}
           </button>
         </div>

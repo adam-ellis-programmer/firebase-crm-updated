@@ -6,6 +6,7 @@ import RadioRow from './RadioRow '
 import CheckboxRow from './CheckboxRow'
 
 const ChangeAccess = ({ claims }) => {
+
   const orgId = claims?.claims?.orgId
   const [alert, setAlert] = useState({
     msg: '',
@@ -157,14 +158,14 @@ const ChangeAccess = ({ claims }) => {
   // It's a plain object (not an array or other object type)
   return (
     <div>
-      <form onSubmit={handleSubmit} className="admin-form">
-        {alert.show && <div className="change-access-alert">{alert.msg}</div>}
+      <form onSubmit={handleSubmit} className='admin-form'>
+        {alert.show && <div className='change-access-alert'>{alert.msg}</div>}
         <ComponentHeader text={`change agent access`} />
         <select
-          id="agent-select"
+          id='agent-select'
           onChange={handleSelectAgent}
-          className="admin-select"
-          name="agent-select"
+          className='admin-select'
+          name='agent-select'
         >
           <option data-id={'select-agent'} value={'select-agent'}>
             select agent
@@ -179,14 +180,14 @@ const ChangeAccess = ({ claims }) => {
             )
           })}
         </select>
-        <div className="change-access-form-grid">
+        <div className='change-access-form-grid'>
           <div>
-            <p className="change-access-header-p">update data</p>
+            <p className='change-access-header-p'>update data</p>
             <div>
               {updateDataArr &&
                 updateDataArr.map(([key, value]) => {
                   return (
-                    <p className="change-access-item-p" key={key}>
+                    <p className='change-access-item-p' key={key}>
                       <span>{key}</span> <span>{value}</span>
                     </p>
                   )
@@ -195,14 +196,14 @@ const ChangeAccess = ({ claims }) => {
           </div>
 
           <div>
-            <p className="change-access-header-p">change access level</p>
+            <p className='change-access-header-p'>change access level</p>
             {roleArr.map(([key, value]) => {
               return (
                 <RadioRow
                   key={key}
                   name={key}
                   id={key}
-                  groupName="accessLevel"
+                  groupName='accessLevel'
                   value={key}
                   labelText={key + ' ' + value}
                   checked={selectedOption.role === key}
@@ -214,7 +215,7 @@ const ChangeAccess = ({ claims }) => {
           </div>
         </div>
 
-        <div className="admin-btn-container">
+        <div className='admin-btn-container'>
           <button
             disabled={loading.submit || loading.populate}
             className={`${

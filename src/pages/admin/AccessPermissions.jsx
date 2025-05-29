@@ -3,10 +3,16 @@ import FormRow from './FormRow'
 import SelectRow from './SelectRow'
 import { useEffect, useState } from 'react'
 import { useAuthStatusTwo } from '../../hooks/useAuthStatusTwo'
-import { getAgent, getAgents, updateAgentPermissions } from '../../crm context/CrmAction'
+import {
+  getAgent,
+  getAgents,
+  updateAgentPermissions,
+} from '../../crm context/CrmAction'
 import CheckboxRow from './CheckboxRow'
+import { useTestUserCheck } from '../../hooks/useTestUserCheck'
 
 const AccessPermissions = () => {
+  const { checkTestUser } = useTestUserCheck()
   const { claims } = useAuthStatusTwo()
   const [agentsData, setAgentsData] = useState(null)
   const [permissions, setPermissions] = useState(null)
@@ -74,6 +80,10 @@ const AccessPermissions = () => {
 
   const handleSubmit = async () => {
     console.log(agentPermissions)
+    if (checkTestUser()) {
+      return
+    }
+
     try {
       setLoading(true)
       const res = await updateAgentPermissions(agentID, agentPermissions)
@@ -116,36 +126,36 @@ const AccessPermissions = () => {
     setAgentPermissions(updatedPermissions)
   }
   return (
-    <div className="page-container">
+    <div className='page-container'>
       <section>
         <h2>controll agents crud functionality</h2>
-        <form action="" className="change-access-form">
+        <form action='' className='change-access-form'>
           <SelectRow
             value={selectedAgent}
             data={agentsData}
-            text="please select agent"
-            labelText="agent selector"
+            text='please select agent'
+            labelText='agent selector'
             onChange={handleSelectAgentChange}
           />
         </form>
       </section>
 
-      <section className="permissions-grid">
+      <section className='permissions-grid'>
         {perm?.map(([key, value]) => {
           const values = Object.entries(value)
           console.log(key)
           return (
             <ul key={key}>
-              <p className="access-permissions-item-header">{key}</p>
+              <p className='access-permissions-item-header'>{key}</p>
               <li>
                 {/* select all div */}
-                <div className="access-select-all-div">
+                <div className='access-select-all-div'>
                   <label>
-                    <span className="access-change-span">select all</span>
+                    <span className='access-change-span'>select all</span>
                   </label>
                   <input
-                    className="access-change-check-box"
-                    type="checkbox"
+                    className='access-change-check-box'
+                    type='checkbox'
                     onChange={(e) => handleSelectAll(e, key, value)}
                     // checked={false}
                     // defaultChecked={true}
@@ -156,14 +166,16 @@ const AccessPermissions = () => {
                   {values?.map(([key2, value]) => {
                     return (
                       <ul key={key2}>
-                        <li className="access-change-li">
+                        <li className='access-change-li'>
                           <label htmlFor={key2}>
-                            <span className="access-change-span">{key2}</span>
+                            <span className='access-change-span'>{key2}</span>
                           </label>
                           <input
-                            onChange={(e) => handlePermissionChange(e, key, key2)}
-                            className="access-change-check-box"
-                            type="checkbox"
+                            onChange={(e) =>
+                              handlePermissionChange(e, key, key2)
+                            }
+                            className='access-change-check-box'
+                            type='checkbox'
                             checked={value}
                             id={key2}
                           />
@@ -178,7 +190,7 @@ const AccessPermissions = () => {
         })}
       </section>
       <section>
-        <div className="admin-btn-container change-permissions-btn-container">
+        <div className='admin-btn-container change-permissions-btn-container'>
           <button
             onClick={handleSubmit}
             disabled={loading}

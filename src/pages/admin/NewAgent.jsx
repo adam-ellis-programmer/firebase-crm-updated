@@ -5,7 +5,7 @@ import { getManagers } from '../../crm context/CrmAction'
 import { useAuthStatusTwo } from '../../hooks/useAuthStatusTwo'
 import { getFunctions, httpsCallable } from 'firebase/functions'
 import { ROLES } from './roles'
-const NewAgent = ({ data }) => {
+const NewAgent = ({ data, checkTestUser }) => {
   // console.log(data)
   const { claims } = useAuthStatusTwo()
   // console.log(claims)
@@ -91,6 +91,9 @@ const NewAgent = ({ data }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if (checkTestUser()) {
+      return
+    }
     console.log(formData)
 
     // return
@@ -136,7 +139,7 @@ const NewAgent = ({ data }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="admin-form">
+      <form onSubmit={handleSubmit} className='admin-form'>
         <ComponentHeader text={`add new agent`} />
         {/* Slice from index 0 to 4 to get only firstName, lastName, email, and password */}
         {formArr.slice(0, 4).map((item) => {
@@ -150,23 +153,23 @@ const NewAgent = ({ data }) => {
               placeholder={`Enter ${key}`}
               onChange={handleFormInput}
               // added to stop duplicate on page
-              formId="new-agent"
+              formId='new-agent'
             />
           )
         })}
 
-        <div className="select-row">
-          <label className="admin-label" htmlFor="admin-label">
+        <div className='select-row'>
+          <label className='admin-label' htmlFor='admin-label'>
             Select Who Reports To
           </label>
           <select
-            className="admin-select"
-            id="admin-label"
-            name="reportsTo"
+            className='admin-select'
+            id='admin-label'
+            name='reportsTo'
             value={formData.reportsTo?.name || ''} // Change this to use the name property
             onChange={onSelectChange}
           >
-            <option data-manager-id={'please-select'} value="">
+            <option data-manager-id={'please-select'} value=''>
               Select Manager
             </option>
             {data?.map((item) => {
@@ -187,18 +190,18 @@ const NewAgent = ({ data }) => {
 
         {/*  */}
 
-        <div className="select-row">
-          <label className="role-select" htmlFor="role-select">
+        <div className='select-row'>
+          <label className='role-select' htmlFor='role-select'>
             Select Role
           </label>
           <select
-            className="admin-select"
-            id="role-select"
-            name="role"
+            className='admin-select'
+            id='role-select'
+            name='role'
             value={formData.role || ''} // Make sure to add role to your formData state
             onChange={handleFormInput} // You can use the regular handleFormInput here
           >
-            <option data-manager-id={'please-select'} value="">
+            <option data-manager-id={'please-select'} value=''>
               Select Role
             </option>
             {roleEntries?.map((item) => {
@@ -218,11 +221,13 @@ const NewAgent = ({ data }) => {
           </select>
         </div>
 
-        <div className="admin-btn-container">
+        <div className='admin-btn-container'>
           <button
             disabled={loading}
             className={`${
-              loading ? 'admin-add-agent-btn admin-btn-disabled' : 'admin-add-agent-btn'
+              loading
+                ? 'admin-add-agent-btn admin-btn-disabled'
+                : 'admin-add-agent-btn'
             }`}
           >
             {loading ? 'making user' : 'submit'}

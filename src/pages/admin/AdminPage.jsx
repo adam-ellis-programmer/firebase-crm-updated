@@ -9,7 +9,10 @@ import AgentCard from './AgentCard'
 import { getFunctions, httpsCallable } from 'firebase/functions'
 import ChangePermissions from './ChangePermissions'
 import Loader from '../../assets/Loader'
+import { useTestUserCheck } from '../../hooks/useTestUserCheck'
 function AdminPage() {
+  const { checkTestUser } = useTestUserCheck()
+
   const { claims } = useAuthStatusTwo()
   const [managers, setManagers] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -40,42 +43,47 @@ function AdminPage() {
 
   return (
     <div>
-      <div className="admin-grid">
-        <div className="agent-sign-up agent-sign-up-left">
-          <div className="agent-inner-div-text">
-            <div className="sign-in-text-container">
-              <h1 className="sign-in-h1-text">Admin Panel</h1>
+      <div className='admin-grid'>
+        <div className='agent-sign-up agent-sign-up-left'>
+          <div className='agent-inner-div-text'>
+            <div className='sign-in-text-container'>
+              <h1 className='sign-in-h1-text'>Admin Panel</h1>
             </div>
-            <div className="sign-in-text-container">
-              <ul className="sign-in-info">
-                <li className="sign-in-list">Control agents' access privileges</li>
-                <li className="sign-in-list">Change Permissions</li>
-                <li className="sign-in-list">Add and Delete Users</li>
-                <li className="sign-in-list">Keep Track of who is logging in</li>
+            <div className='sign-in-text-container'>
+              <ul className='sign-in-info'>
+                <li className='sign-in-list'>
+                  Control agents' access privileges
+                </li>
+                <li className='sign-in-list'>Change Permissions</li>
+                <li className='sign-in-list'>Add and Delete Users</li>
+                <li className='sign-in-list'>
+                  Keep Track of who is logging in
+                </li>
               </ul>
             </div>
           </div>
         </div>
-        <div className="agent-sign-up agent-sign-up-right">
-          <div className="admin-controls-text-container">
+        <div className='agent-sign-up agent-sign-up-right'>
+          <div className='admin-controls-text-container'>
             <p>Your Admin Controls</p>
           </div>
           {/* ========================================== */}
-          {/*  */}
-          <NewAgent data={managers} />
-          <DeleteAgent data={managers} />
-          <ChangeAccess claims={claims} />
-          <ReportsTo data={managers} claims={claims} />
-          <ChangePermissions data={managers} claims={claims} />
+          <NewAgent data={managers} checkTestUser={checkTestUser} />
+          <DeleteAgent data={managers} checkTestUser={checkTestUser} />
+          <ChangeAccess claims={claims} checkTestUser={checkTestUser} />
+          {/*prettier-ignore */}
+          <ReportsTo data={managers} claims={claims} checkTestUser={checkTestUser}  />
+          {/*prettier-ignore */}
+          <ChangePermissions data={managers} claims={claims} checkTestUser={checkTestUser}  />
           {/*  */}
           {/* ========================================== */}
         </div>
-        <div className="agent-page-right">
-          <div className="admin-controls-text-container">
+        <div className='agent-page-right'>
+          <div className='admin-controls-text-container'>
             <p>Active Agents</p>
           </div>
 
-          <div className="user-list-container">
+          <div className='user-list-container'>
             {loading ? (
               <Loader />
             ) : (

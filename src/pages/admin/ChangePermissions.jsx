@@ -8,10 +8,13 @@ import { Link } from 'react-router-dom'
 
 const ChangePermissions = ({ data }) => {
   return (
-    <div className="admin-form">
+    <div className='admin-form'>
       <ComponentHeader text={`change access permissions`} />
-      <div className="admin-btn-container">
-        <Link to="/change-access" className="admin-add-agent-btn change-rep-to-btn">
+      <div className='admin-btn-container'>
+        <Link
+          to='/change-access'
+          className='admin-add-agent-btn change-rep-to-btn'
+        >
           change
         </Link>
       </div>
