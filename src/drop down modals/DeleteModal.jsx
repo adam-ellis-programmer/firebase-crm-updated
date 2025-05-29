@@ -4,8 +4,11 @@ import { ReactComponent as WarningIcon } from '../icons/warning.svg'
 import { useParams, useNavigate } from 'react-router-dom'
 import { db } from '../firebase.config'
 import { doc, deleteDoc } from 'firebase/firestore'
+import { useTestUserCheck } from '../hooks/useTestUserCheck'
 
 function DeleteModal() {
+  const { checkTestUser } = useTestUserCheck()
+
   useEffect(() => {
     if (modalRef.current) {
       console.log(modalRef)
@@ -26,6 +29,10 @@ function DeleteModal() {
   }
 
   const handleDeleteClick = async (id) => {
+    if (checkTestUser()) {
+      return
+    }
+
     await deleteDoc(doc(db, 'customers', params.uid))
     await deleteDoc(doc(db, 'stats', params.uid))
 
@@ -36,25 +43,27 @@ function DeleteModal() {
     <div
       tabIndex={-1}
       ref={modalRef}
-      className={deleteBtn ? 'modal-container modal-active ' : 'modal-container '}
+      className={
+        deleteBtn ? 'modal-container modal-active ' : 'modal-container '
+      }
     >
-      <div className="modal-header">
-        <WarningIcon width="34px" height="34px" className="warning-icon" />
-        <p className="modal-header-text">Are You Sure You Want to Delete ...</p>
+      <div className='modal-header'>
+        <WarningIcon width='34px' height='34px' className='warning-icon' />
+        <p className='modal-header-text'>Are You Sure You Want to Delete ...</p>
       </div>
 
-      <div className="modal-body">
+      <div className='modal-body'>
         <p>you are about to delete </p>
         <p>this can't be undone</p>
       </div>
-      <div className="modal-footer">
+      <div className='modal-footer'>
         <button
           onClick={() => handleDeleteClick(params.uid)}
-          className="modal-delete-btn"
+          className='modal-delete-btn'
         >
           delete
         </button>
-        <button onClick={handleCloseModal} className="modal-delete-btn">
+        <button onClick={handleCloseModal} className='modal-delete-btn'>
           close
         </button>
       </div>

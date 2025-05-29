@@ -8,7 +8,6 @@ import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
 import ProfileControlButtons from './ProfileControlButtons'
 import { useAuthStatusTwo } from '../hooks/useAuthStatusTwo'
 function DisplayCustomerData({ customer }) {
-
   const { claims } = useAuthStatusTwo()
   const { changeDetails, sendTextModal, dispatch } = useContext(CrmContext)
 
@@ -38,6 +37,7 @@ function DisplayCustomerData({ customer }) {
       [e.target.id]: e.target.value,
     }))
   }
+  console.log('-----ran----')
 
   try {
     // if change details true
@@ -55,9 +55,9 @@ function DisplayCustomerData({ customer }) {
   const formatPhoneNumber = (phoneNumber) => {
     if (phoneNumber === '') {
       return (
-        <div className="profile-extra-info profile-phone-div">
+        <div className='profile-extra-info profile-phone-div'>
           <div>phone</div>
-          <p className="no-number">No number To Display</p>
+          <p className='no-number'>No number To Display</p>
         </div>
       )
     }
@@ -73,12 +73,12 @@ function DisplayCustomerData({ customer }) {
     const isMobile = mobReg.test(cleaned)
 
     return (
-      <div className="profile-extra-info profile-phone-div">
+      <div className='profile-extra-info profile-phone-div'>
         <div>{isMobile ? 'Mobile' : 'Phone'}</div>
         <div>
-          <span className="formatted-phone-number">({areaCode})</span>
-          <span className="formatted-phone-number"> - {middle}</span>
-          <span className="formatted-phone-number"> - {end}</span>
+          <span className='formatted-phone-number'>({areaCode})</span>
+          <span className='formatted-phone-number'> - {middle}</span>
+          <span className='formatted-phone-number'> - {end}</span>
         </div>
       </div>
     )
@@ -92,20 +92,20 @@ function DisplayCustomerData({ customer }) {
 
   return (
     <div>
-      <div className="profile-card profile-page-card">
-        <form className="profile-form">
+      <div className='profile-card profile-page-card'>
+        <form className='profile-form'>
           <input
             className={changeDetails ? 'profile-input' : 'profile-card-active'}
-            type="text"
-            id="name"
+            type='text'
+            id='name'
             onChange={onChange}
             value={name}
             disabled={!changeDetails}
           />
           <input
             className={changeDetails ? 'profile-input' : 'profile-card-active'}
-            type="text"
-            id="phone"
+            type='text'
+            id='phone'
             onChange={onChange}
             value={phone}
             disabled={!changeDetails}
@@ -113,34 +113,36 @@ function DisplayCustomerData({ customer }) {
         </form>
       </div>
 
-      <div className="customer-details">
-        <div className="customer-details-container">
-          <p className="profile-extra-info">
+      <div className='customer-details'>
+        <div className='customer-details-container'>
+          <p className='profile-extra-info'>
             Org Name <span> {permissions?.orgName}</span>
           </p>
 
-          <p className="profile-extra-info">
+          <p className='profile-extra-info'>
             Cust ID <span>{customer.custId} </span>{' '}
           </p>
 
-          <button onClick={handleOpenTextModal} className="send-text-btn">
+          <button onClick={handleOpenTextModal} className='send-text-btn'>
             {formatPhoneNumber(customer.phone)}
           </button>
 
-          <p className="profile-extra-info">
+          <p className='profile-extra-info'>
             Email <span>{customer.email} </span>
           </p>
-          <p className="profile-extra-info">
+          <p className='profile-extra-info'>
             Date Of Signup <span>{customer.dateOfSignUp.split(',')[0]} </span>
           </p>
-          <p className="profile-extra-info">
+          <p className='profile-extra-info'>
             Time Of Signup <span>{customer.dateOfSignUp.split(',')[1]} </span>
           </p>
-          <p className="profile-extra-info">
+          <p className='profile-extra-info'>
             Sign Up Agent
-            <span>{customer.signUpagent ? customer.signUpagent : 'System'}</span>
+            <span>
+              {customer.signUpagent ? customer.signUpagent : 'System'}
+            </span>
           </p>
-          <p className="profile-extra-info">
+          <p className='profile-extra-info'>
             Account
             <span>{customer.company}</span>
           </p>
@@ -151,25 +153,25 @@ function DisplayCustomerData({ customer }) {
               {customer.signUpagent ? customer.formattedAddress : 'System'}
             </span>
           </p>
-          <p className="profile-extra-info">
+          <p className='profile-extra-info'>
             Postcode
             <span>ST5 1LT</span>
           </p>
-          <p className="profile-extra-info">
+          <p className='profile-extra-info'>
             Agent Reports To
             <span>{customer.reportsTo.name}</span>
           </p>
         </div>
 
         <ProfileControlButtons />
-        <div className="docs-link-contaimer">
-          <Link to={`/docs/${customer?.custId}`} className="documents-link">
+        <div className='docs-link-contaimer'>
+          <Link to={`/docs/${customer?.custId}`} className='documents-link'>
             documents
           </Link>
         </div>
       </div>
 
-      <div className="map-container">
+      <div className='map-container'>
         <MapContainer
           style={{
             height: '100%',
@@ -182,12 +184,14 @@ function DisplayCustomerData({ customer }) {
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
-          <Marker position={[customer.geoLocation.lat, customer.geoLocation.lng]}>
+          <Marker
+            position={[customer.geoLocation.lat, customer.geoLocation.lng]}
+          >
             <Popup>
               <div
-                className="box"
+                className='box'
                 style={{
                   width: '100%',
                   fontSize: '20px',

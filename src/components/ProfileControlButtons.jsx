@@ -1,8 +1,10 @@
 import { useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import CrmContext from '../crm context/CrmContext'
+import { useTestUserCheck } from '../hooks/useTestUserCheck'
 
 function ProfileControlButtons() {
+  const { checkTestUser } = useTestUserCheck()
   const { dispatch, deleteBtn, toggleEmail, changeDetails, submitDetails } =
     useContext(CrmContext)
   // const [check, setCheck] = useState(false)
@@ -38,7 +40,12 @@ function ProfileControlButtons() {
   }
 
   const handleChangeDetails = () => {
+    if (checkTestUser()) {
+      return
+    }
     toggleChangeDetails()
+
+    // return
     if (submitDetails === false) {
       dispatch({ type: 'SUBMIT_UPDATED_NAME', payload: true })
     } else {
@@ -47,20 +54,22 @@ function ProfileControlButtons() {
   }
 
   return (
-    <div className="profile-control-container">
+    <div className='profile-control-container'>
       <button
         onClick={() => handleDeleteToggle(params.uid)}
-        className="profile-control-btn"
+        className='profile-control-btn'
       >
         delete
       </button>
       <button
         onClick={handleChangeDetails}
-        className={changeDetails ? 'profile-control-btn-on ' : 'profile-control-btn '}
+        className={
+          changeDetails ? 'profile-control-btn-on ' : 'profile-control-btn '
+        }
       >
         {changeDetails ? 'finished' : 'update'}
       </button>
-      <button onClick={handleToggleEmail} className="profile-control-btn">
+      <button onClick={handleToggleEmail} className='profile-control-btn'>
         email
       </button>
     </div>
