@@ -47,10 +47,11 @@ export const getCurrentAuthState = () => {
   })
 }
 
-const authState = await getCurrentAuthState()
-
 export async function getCustomersForMainDataPage(collectionName, params) {
   try {
+    const authState = await getCurrentAuthState()
+    const orgId = authState.claims.orgId
+
     //  get a reference
     const usersReference = collection(db, collectionName)
 
@@ -58,7 +59,8 @@ export async function getCustomersForMainDataPage(collectionName, params) {
     const q = query(
       usersReference,
       where('agentUid', '==', params),
-      orderBy('timestamp', 'desc')
+      orderBy('timestamp', 'desc'),
+      where('orgId', '==', orgId)
       // limit(10)
     )
 
@@ -471,15 +473,19 @@ export async function updateCustomerStats(collectionName, custId, formData) {
 
 export async function getAndOrderStatsForStatsPage(collectionName, params) {
   try {
-    const collectionRef = collection(db, collectionName)
-    // const q = query(
-    //   collectionRef,
-    //   where('custId', '==', params),
-    //   // orderBy('price', 'desc'),
-    //   limit(10)
-    // );
+    const authState = await getCurrentAuthState()
+    const orgId = authState.claims.orgId
 
-    const querySnap = await getDocs(collectionRef)
+    const collectionRef = collection(db, collectionName)
+    const q = query(
+      collectionRef,
+      // where('custId', '==', params),
+      // orderBy('price', 'desc'),
+      where('orgId', '==', orgId),
+      limit(10)
+    )
+
+    const querySnap = await getDocs(q)
 
     const users = []
     querySnap.forEach((doc) => {

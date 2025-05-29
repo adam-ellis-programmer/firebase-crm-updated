@@ -10,7 +10,7 @@ const PayPalBtn = ({ price, productId }) => {
   const [newSubId, setNewSubId] = useState('')
   const [paymentStatus, setPaymentStatus] = useState('')
 
-  console.log(process.env.REACT_APP_PAY_PAL_ID)
+
 
   const initialOptions = {
     clientId: process.env.REACT_APP_PAY_PAL_ID,
@@ -23,11 +23,11 @@ const PayPalBtn = ({ price, productId }) => {
   const handleSuccess = useCallback(
     async (data) => {
       try {
-        console.log('Payment successful:', data)
+        // console.log('Payment successful:', data)
         setPaymentStatus('Payment completed successfully!')
         console.log('subscription data=>', subscriptionInfo)
 
-        console.log(subscriptionInfo)
+        // console.log(subscriptionInfo)
         // return
         const functions = getFunctions()
         const newAccSignUp = httpsCallable(functions, 'newAccSignUp')

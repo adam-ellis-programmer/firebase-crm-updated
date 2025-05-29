@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
-import { getCustomersForMainDataPage, getTeamData } from '../crm context/CrmAction'
+import {
+  getCustomersForMainDataPage,
+  getTeamData,
+} from '../crm context/CrmAction'
 
 import DataSvgIcon from '../components/DataSvgIcon'
 import Loader from '../assets/Loader'
@@ -20,7 +23,6 @@ function MyData() {
   // const [searchTearm, setSearchTearm] = useState('initialState')
   const [loading, setLoading] = useState(true)
   // ONLY USE THE IS MY DATA FUNCTION
-  // check do these record strictly belong to me
 
   // use filter to only show viewer.id === document
   // use filere to only show correct docs
@@ -54,7 +56,10 @@ function MyData() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await getCustomersForMainDataPage('customers', loggedInUserUid)
+        const data = await getCustomersForMainDataPage(
+          'customers',
+          loggedInUserUid
+        )
         // console.log(data)
         setLoading(false)
         setCustomers(data)
@@ -125,58 +130,58 @@ function MyData() {
   }
 
   return (
-    <div className="page-container">
-      <header className="data-header">
-        <p className="data-header-text">
+    <div className='page-container'>
+      <header className='data-header'>
+        <p className='data-header-text'>
           <span> {loggedInUser && `Showing ${loggedInUser}s data`}</span>
         </p>
       </header>
 
       <main>
-        <div className="page-container data-page-container">
-          <div className="main-data-page-search-container grid grid-cols-1 lg:grid-cols-4">
-            <div className="name-search-box data-page-search-box">
+        <div className='page-container data-page-container'>
+          <div className='main-data-page-search-container grid grid-cols-1 lg:grid-cols-4'>
+            <div className='name-search-box data-page-search-box'>
               <input
                 onChange={handleNameSearch}
-                className="data-page-search-input"
-                type="text"
-                placeholder="Search Name"
-                id="nameSearch"
+                className='data-page-search-input'
+                type='text'
+                placeholder='Search Name'
+                id='nameSearch'
               />
             </div>
-            <div className="name-search-box data-page-search-box">
+            <div className='name-search-box data-page-search-box'>
               <input
                 onChange={handleEmailSearch}
-                className="data-page-search-input"
-                type="text"
-                placeholder="Search Email"
-                id="emailSearch"
+                className='data-page-search-input'
+                type='text'
+                placeholder='Search Email'
+                id='emailSearch'
               />
             </div>
-            <div className="name-search-box data-page-search-box">
+            <div className='name-search-box data-page-search-box'>
               <input
                 onChange={handleCompanySearch}
-                className="data-page-search-input"
-                type="text"
-                placeholder="Search Company"
-                id="companySearch"
+                className='data-page-search-input'
+                type='text'
+                placeholder='Search Company'
+                id='companySearch'
               />
             </div>
-            <div className="name-search-box data-page-search-box">
+            <div className='name-search-box data-page-search-box'>
               <input
                 onChange={handleOwnerSearch}
-                className="data-page-search-input"
-                type="text"
-                placeholder="Search Owner"
-                id="ownerSearch"
+                className='data-page-search-input'
+                type='text'
+                placeholder='Search Owner'
+                id='ownerSearch'
               />
             </div>
           </div>
 
-          <div className="main-data-container">
+          <div className='main-data-container'>
             <table>
               <thead>
-                <tr className="data-table-head-row">
+                <tr className='data-table-head-row'>
                   <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
@@ -215,7 +220,7 @@ function MyData() {
               </tbody>
             </table>
             {customers && customers.length === 0 && (
-              <div className="no-data-container">
+              <div className='no-data-container'>
                 <DataSvgIcon />
               </div>
             )}

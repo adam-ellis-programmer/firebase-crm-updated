@@ -53,50 +53,51 @@ const CompanyPaymentForm = () => {
       .replace(/^./, (str) => str.toUpperCase()) // Capitalize first letter
   }
 
-  console.log(formatFieldName('helloThere'))
-
   return (
-    <div className="max-w-md mx-auto p-6 mb-8">
-      <form id="company-payment-form" className="space-y-4 company-payment-form">
+    <div className='max-w-md mx-auto p-6 mb-8'>
+      <form
+        id='company-payment-form'
+        className='space-y-4 company-payment-form'
+      >
         <FormRow
-          type="text"
-          name="firstName"
-          labelText="First Name"
+          type='text'
+          name='firstName'
+          labelText='First Name'
           defaultValue={subscriptionInfo.firstName}
           onChange={handleChange}
         />
         <FormRow
-          type="text"
-          name="lastName"
-          labelText="Last Name"
+          type='text'
+          name='lastName'
+          labelText='Last Name'
           defaultValue={subscriptionInfo.lastName}
           onChange={handleChange}
         />
         <FormRow
-          type="email"
-          name="email"
-          labelText="Company Email"
+          type='email'
+          name='email'
+          labelText='Company Email'
           defaultValue={subscriptionInfo.email}
           onChange={handleChange}
         />
         <FormRow
-          type="tel"
-          name="phone"
-          labelText="Phone Number"
+          type='tel'
+          name='phone'
+          labelText='Phone Number'
           defaultValue={subscriptionInfo.phone}
           onChange={handleChange}
         />
         <FormRow
-          type="text"
-          name="orgName"
-          labelText="OrgName"
+          type='text'
+          name='orgName'
+          labelText='OrgName'
           defaultValue={subscriptionInfo.orgName}
           onChange={handleChange}
         />
         <FormRow
-          type="text"
-          name="password"
-          labelText="Password"
+          type='text'
+          name='password'
+          labelText='Password'
           defaultValue={subscriptionInfo.password}
           onChange={handleChange}
         />
