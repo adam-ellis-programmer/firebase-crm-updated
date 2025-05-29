@@ -23,7 +23,8 @@ const NewSignupForm = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getAgent(claims?.claims?.agentId)
-      setAgentData(res.data)
+      console.log(res)
+      setAgentData(res?.data) 
     }
 
     if (claims?.claims) {
@@ -277,7 +278,7 @@ const NewSignupForm = () => {
       agentUid: loggedInUser.uid,
       dateOfSignUp: new Date().toLocaleString('en-GB'),
       timestamp: serverTimestamp(),
-      reportsTo: agentData.reportsTo,
+      reportsTo: agentData?.reportsTo,
       custId: id,
       docAccessLevel: claims?.claims?.roleLevel,
     }
