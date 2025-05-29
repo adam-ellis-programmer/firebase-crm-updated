@@ -205,7 +205,6 @@ const NewSignupForm = () => {
       return
     }
 
-    return
     // if the agent has not got manager permission
     if (claims.claims.roleLevel < 2) {
       console.log('you are not authorized to sign up new customers! ')
