@@ -127,6 +127,12 @@ export const CrmReducer = (state, action) => {
         ...state,
         custNum: action.payload,
       }
+    case 'SET_GEN_ALERT':
+      console.log('from payload',action.payload.show)
+      return {
+        ...state,
+        showGlobalAlert: action.payload.show,
+      }
 
     default:
       return state

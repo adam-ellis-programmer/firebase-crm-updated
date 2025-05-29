@@ -27,12 +27,14 @@ import DataSvgIcon from './DataSvgIcon'
 import { useAuthStatusTwo } from '../hooks/useAuthStatusTwo'
 import Loader from '../assets/Loader'
 import OrderCard from '../cards/OrderCard'
+import { useTestUserCheck } from '../hooks/useTestUserCheck'
 // import { products } from '../utils'
 
 // for testing
 // const {history} = useHistory();
 
 function DisplayOrders({ permissions }) {
+  const { checkTestUser } = useTestUserCheck()
   const { loggedInUser, claims } = useAuthStatusTwo()
 
   // permissions[resource][action]
@@ -235,6 +237,15 @@ function DisplayOrders({ permissions }) {
 
   const onSubmit = async (e) => {
     e.preventDefault()
+    console.log('returning...')
+
+    if (checkTestUser()) {
+      console.log('test user ')
+      console.log(checkTestUser())
+      return
+    }
+
+    // return
     if (!hasPermission('customers', 'create')) return
 
     if (isSubmitting) return

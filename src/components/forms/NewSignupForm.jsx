@@ -14,9 +14,11 @@ import {
   getDownloadURL,
 } from 'firebase/storage'
 import { getAgent } from '../../crm context/CrmAction'
+import { useTestUserCheck } from '../../hooks/useTestUserCheck'
 
 const NewSignupForm = () => {
   const { uid } = useParams()
+  const { checkTestUser } = useTestUserCheck()
   const { loggedIn, checkingStatus, loggedInUser, claims } = useAuthStatusTwo()
   const [agentData, setAgentData] = useState(null)
   // console.log(claims?.claims.orgName)
@@ -24,7 +26,7 @@ const NewSignupForm = () => {
     const getData = async () => {
       const res = await getAgent(claims?.claims?.agentId)
       console.log(res)
-      setAgentData(res?.data) 
+      setAgentData(res?.data)
     }
 
     if (claims?.claims) {
@@ -198,6 +200,12 @@ const NewSignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if (checkTestUser()) {
+      console.log(checkTestUser())
+      return
+    }
+
+    return
     // if the agent has not got manager permission
     if (claims.claims.roleLevel < 2) {
       console.log('you are not authorized to sign up new customers! ')

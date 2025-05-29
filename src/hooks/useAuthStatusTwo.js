@@ -6,6 +6,7 @@ export const useAuthStatusTwo = () => {
   const [checkingStatus, setCheckingStatus] = useState(true)
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [claims, setClaims] = useState(null)
+  const [testUser, setTestUser] = useState(null)
 
   useEffect(() => {
     const auth = getAuth()
@@ -16,7 +17,7 @@ export const useAuthStatusTwo = () => {
         setLoggedIn(true)
         setLoggedInUser(user)
         user.getIdTokenResult(true).then((data) => {
-          // console.log(data.claims)
+          setTestUser(data?.claims?.claims?.testUser)
           setClaims(data.claims)
         })
       } else {
@@ -32,5 +33,5 @@ export const useAuthStatusTwo = () => {
     return () => unsubscribe()
   }, [])
 
-  return { loggedIn, checkingStatus, loggedInUser, claims }
+  return { loggedIn, checkingStatus, loggedInUser, claims, testUser }
 }
