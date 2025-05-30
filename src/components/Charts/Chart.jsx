@@ -56,12 +56,12 @@ const Chart = () => {
   return (
     <div className=''>
       <div className='chart-page-sub-header-div'>
-        <p>sales by company</p>
+        <p>sales by company (top 20)</p>
       </div>
       <BarChart
         width={500}
         height={300}
-        data={newArr}
+        data={newArr.slice(0, 20)}
         margin={{
           top: 5,
           right: 30,

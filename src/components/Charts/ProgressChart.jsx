@@ -47,21 +47,23 @@ const ProgressChart = () => {
     <div>
       {/* sort by date and limit to 5 on the server */}
       {/* sandbox this and test on its own */}
-      <div className="chart-page-sub-header-div">
-        <p>last 5 sign on progress</p>
+      <div className='chart-page-sub-header-div'>
+        <p>company sign on progress</p>
       </div>
 
-      <div className="progress-bars-container">
+      <div className='progress-bars-container  h-[350px] overflow-scroll'>
         {customerData &&
           customerData.map((customer) => (
-            <div key={customer.id} className="progress-item">
-              <div className="progress-info">
-                <span className="company-name">{customer.company}</span>
-                <span className="progress-percentage">{customer.progress}%</span>
+            <div key={customer.id} className='progress-item'>
+              <div className='progress-info'>
+                <span className='company-name'>{customer.company}</span>
+                <span className='progress-percentage'>
+                  {customer.progress}%
+                </span>
               </div>
-              <div className="progress-bar-outer">
+              <div className='progress-bar-outer'>
                 <div
-                  className="progress-bar-inner"
+                  className='progress-bar-inner'
                   style={{
                     width: `${customer.progress}%`,
                     backgroundColor: getProgressColor(customer.progress),
