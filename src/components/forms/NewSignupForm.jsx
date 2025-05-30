@@ -307,9 +307,12 @@ const NewSignupForm = () => {
 
     try {
       await setDoc(doc(db, 'customers', id), userData)
-      await setDoc(doc(db, 'stats', id), stats)
-      resetState()
-      navigate(`/data/${loggedInUser.uid}}`)
+      await setDoc(doc(db, 'stats', id), stats) 
+
+      console.log('---user data', userData)
+      console.log('---stats data', stats)
+      // resetState()
+      // navigate(`/data/${loggedInUser.uid}}`)
     } catch (error) {
       console.log(error)
     }

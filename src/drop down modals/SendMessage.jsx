@@ -8,8 +8,11 @@ import { db } from '../firebase.config'
 import { getDatabase, ref, set, push, get } from 'firebase/database'
 import { getAllAgentsForChat } from '../crm context/CrmAction'
 import { useAuthStatusTwo } from '../hooks/useAuthStatusTwo'
+import { useTestUserCheck } from '../hooks/useTestUserCheck'
 
 function SendMessage() {
+  const { checkTestUser } = useTestUserCheck()
+
   const [sendingAgent, setSendingAgent] = useState(null)
   const [message, setMessage] = useState('')
   const [recipientId, setRecipientId] = useState('')
@@ -64,6 +67,10 @@ function SendMessage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (checkTestUser()) {
+      return
+    }
 
     if (!sendingAgent || !recipientId || !message || message.trim() === '') {
       alert('Please select a recipient and enter a message')

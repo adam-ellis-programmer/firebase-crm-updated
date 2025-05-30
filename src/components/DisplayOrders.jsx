@@ -11,6 +11,7 @@ import {
   updateCustomerStats,
   getDocument,
   getProducts,
+  getCurrentAuthState,
 } from '../crm context/CrmAction'
 import { doc, deleteDoc, serverTimestamp } from 'firebase/firestore'
 import {
@@ -39,7 +40,7 @@ function DisplayOrders({ permissions }) {
 
   // permissions[resource][action]
   // checks permissions[customers][delete] = false
-  // resource is the actural object
+  // resource is the actual object
   // action is the object value name
   // if (!hasPermission('customers', 'delete')) return
   const hasPermission = (resource, action) => {
@@ -118,7 +119,9 @@ function DisplayOrders({ permissions }) {
   useEffect(() => {
     try {
       const getDbData = async () => {
+        console.log('---- params uid ------', params.uid)
         const ordersData = await getCollection('orders', params.uid)
+        console.log(ordersData)
 
         // Create a new copy of the array
         const sortedOrders = [...ordersData].sort(
@@ -241,6 +244,9 @@ function DisplayOrders({ permissions }) {
 
   const onSubmit = async (e) => {
     e.preventDefault()
+
+    const authState = await getCurrentAuthState()
+    const orgId = authState.claims.orgId
     console.log('returning...')
 
     if (checkTestUser()) {
@@ -263,6 +269,7 @@ function DisplayOrders({ permissions }) {
 
       const newOrder = {
         ...formData,
+        orgId,
         price,
         customerUid: params.uid,
         agentId: params.agentUid,

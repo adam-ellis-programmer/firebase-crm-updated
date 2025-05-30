@@ -5,8 +5,8 @@ import { getManagers } from '../../crm context/CrmAction'
 import { useAuthStatusTwo } from '../../hooks/useAuthStatusTwo'
 import { getFunctions, httpsCallable } from 'firebase/functions'
 import { ROLES } from './roles'
+import SeederButtons from '../../seeders/SeederButtons'
 const NewAgent = ({ data, checkTestUser }) => {
-  // console.log(data)
   const { claims } = useAuthStatusTwo()
   // console.log(claims)
   // return
@@ -21,7 +21,7 @@ const NewAgent = ({ data, checkTestUser }) => {
     email: 'fiona@gmail.com',
     password: '111111',
     reportsTo: null,
-    role: '', // Add this
+    role: '',
     roleLevel: 0,
   })
 
@@ -30,7 +30,6 @@ const NewAgent = ({ data, checkTestUser }) => {
     if (claims?.claims) {
       setFormData((prev) => ({
         ...prev,
-        // missing data here !!
         orgName: claims.claims.orgName,
         orgId: claims.claims.orgId,
         defaultHandBack: {
@@ -91,10 +90,12 @@ const NewAgent = ({ data, checkTestUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    console.log(formData)
+
+    return
     if (checkTestUser()) {
       return
     }
-    console.log(formData)
 
     // return
     setLoading(true)
@@ -139,6 +140,7 @@ const NewAgent = ({ data, checkTestUser }) => {
 
   return (
     <div>
+      <SeederButtons />
       <form onSubmit={handleSubmit} className='admin-form'>
         <ComponentHeader text={`add new agent`} />
         {/* Slice from index 0 to 4 to get only firstName, lastName, email, and password */}

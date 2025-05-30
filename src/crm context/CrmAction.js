@@ -111,15 +111,16 @@ export async function getOrdersAfterEdit(collectionName, params) {
 }
 
 export async function getCollection(collectionName, params) {
+  console.log(params)
   try {
     const authState = await getCurrentAuthState()
+    const orgId = authState.claims.orgId
 
     // if (!authState || !authState.claims?.orgId) {
     //   console.log('No auth state or orgId available')
     //   return [] // Return empty array instead of undefined
     // }
 
-    const orgId = authState.claims.orgId
 
     const collectionRef = collection(db, collectionName)
     const q = query(

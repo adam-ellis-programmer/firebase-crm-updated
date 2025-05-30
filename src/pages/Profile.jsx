@@ -19,8 +19,10 @@ import PieChartJs from '../components/Charts/PieChartJS'
 import LineChartJS from '../components/Charts/LineChartJS'
 import ChartButtons from '../components/Charts/ChartButtons'
 import Claims from '../components/Claims'
+import { useTestUserCheck } from '../hooks/useTestUserCheck'
 
 function Profile() {
+  const { checkTestUser } = useTestUserCheck()
   const [loading, setLoading] = useState(true)
 
   const { dispatch, profileChartType } = useContext(CrmContext)
@@ -118,15 +120,18 @@ function Profile() {
   }
   // console.log(orders)
   return (
-    <div className="page-container">
+    <div className='page-container'>
       <DashboardHeader />
       <main>
-        <div className="profile-grid gap-6 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3">
-          <div className="profile-agent-details profile-grid-item">
-            <div className="profile-detais-header">
+        <div className='profile-grid gap-6 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3'>
+          <div className='profile-agent-details profile-grid-item'>
+            <div className='profile-detais-header'>
               <button
-                className="change-personal-details"
+                className='change-personal-details'
                 onClick={() => {
+                  if (checkTestUser()) {
+                    return
+                  }
                   changeDetails && onSubmit()
                   setChangeDetails((prevState) => !prevState)
                 }}
@@ -134,20 +139,24 @@ function Profile() {
                 {changeDetails ? 'done' : 'edit details'}
               </button>
             </div>
-            <div className="">
-              <form className="agent-profile-info-card">
+            <div className=''>
+              <form className='agent-profile-info-card'>
                 <input
-                  type="text"
-                  id="name"
-                  className={!changeDetails ? 'agent-details' : 'agent-details ag-active'}
+                  type='text'
+                  id='name'
+                  className={
+                    !changeDetails ? 'agent-details' : 'agent-details ag-active'
+                  }
                   disabled={!changeDetails}
                   value={name}
                   onChange={onChange}
                 />
                 <input
-                  type="text"
-                  id="email"
-                  className={!changeDetails ? 'agent-details' : 'agent-details ag-active'}
+                  type='text'
+                  id='email'
+                  className={
+                    !changeDetails ? 'agent-details' : 'agent-details ag-active'
+                  }
                   disabled={!changeDetails}
                   value={email}
                   onChange={onChange}
@@ -159,118 +168,140 @@ function Profile() {
 
             {emails && emails.length > 0 ? (
               <>
-                <p className="profile-top-five-header profile-emails">
+                <p className='profile-top-five-header profile-emails'>
                   most recent 5 emails
                 </p>
-                <div className="most-recent-heading">
+                <div className='most-recent-heading'>
                   {' '}
-                  <span className="most-recent-text">Name</span>
-                  <span className="most-recent-text">Email</span>
-                  <span className="most-recent-text">Date</span>
+                  <span className='most-recent-text'>Name</span>
+                  <span className='most-recent-text'>Email</span>
+                  <span className='most-recent-text'>Date</span>
                 </div>
               </>
             ) : (
-              <div className="profile-no-data-container">
+              <div className='profile-no-data-container'>
                 <p>no emails to show yet</p>
               </div>
             )}
-            <ul className="most-recent-customers">
+            <ul className='most-recent-customers'>
               {emails &&
                 emails.map(({ id, data }) => (
-                  <li key={id} className="most-recent-customers-items">
-                    <span className="most-recent-email-info">{data.customerName}</span>
-                    <span className="most-recent-email-info">{data.emailBody}</span>
-                    <span className="most-recent-email-info">{data.dateSent}</span>
+                  <li key={id} className='most-recent-customers-items'>
+                    <span className='most-recent-email-info'>
+                      {data.customerName}
+                    </span>
+                    <span className='most-recent-email-info'>
+                      {data.emailBody}
+                    </span>
+                    <span className='most-recent-email-info'>
+                      {data.dateSent}
+                    </span>
                   </li>
                 ))}
             </ul>
 
             {orders && orders.length > 0 ? (
               <>
-                <p className="profile-top-five-header profile-sales">
+                <p className='profile-top-five-header profile-sales'>
                   most recent 5 Sales
                 </p>
-                <div className="most-recent-heading">
+                <div className='most-recent-heading'>
                   {' '}
-                  <span className="most-recent-text">Item</span>
-                  <span className="most-recent-text">Price</span>
-                  <span className="most-recent-text">For</span>
-                  <span className="most-recent-text">Email</span>
-                  <span className="most-recent-text">Date</span>
+                  <span className='most-recent-text'>Item</span>
+                  <span className='most-recent-text'>Price</span>
+                  <span className='most-recent-text'>For</span>
+                  <span className='most-recent-text'>Email</span>
+                  <span className='most-recent-text'>Date</span>
                 </div>
               </>
             ) : (
-              <div className="profile-no-data-container">
+              <div className='profile-no-data-container'>
                 <p>no sales to show yet</p>
               </div>
             )}
-            <ul className="most-recent-customers">
+            <ul className='most-recent-customers'>
               {orders &&
                 orders.map(({ id, data }) => (
-                  <li key={id} className="most-recent-customers-items">
-                    <span className="most-recent-email-info">{data.selectItem}</span>
-                    <span className="most-recent-email-info">{data.price}</span>
-                    <span className="most-recent-email-info">{data.customerName}</span>
-                    <span className="most-recent-email-info">{data.customerEmail}</span>
+                  <li key={id} className='most-recent-customers-items'>
+                    <span className='most-recent-email-info'>
+                      {data.selectItem}
+                    </span>
+                    <span className='most-recent-email-info'>{data.price}</span>
+                    <span className='most-recent-email-info'>
+                      {data.customerName}
+                    </span>
+                    <span className='most-recent-email-info'>
+                      {data.customerEmail}
+                    </span>
 
-                    <span className="most-recent-email-info">{data.dateOfOrder}</span>
+                    <span className='most-recent-email-info'>
+                      {data.dateOfOrder}
+                    </span>
                   </li>
                 ))}
             </ul>
 
             {notes && notes.length > 0 ? (
               <>
-                <p className="profile-top-five-header profile-notes">
+                <p className='profile-top-five-header profile-notes'>
                   most recent 5 Notes
                 </p>
-                <div className="most-recent-heading">
-                  <span className="most-recent-text">customer</span>
-                  <span className="most-recent-text">email</span>
-                  <span className="most-recent-text">note</span>
-                  <span className="most-recent-text">Date</span>
+                <div className='most-recent-heading'>
+                  <span className='most-recent-text'>customer</span>
+                  <span className='most-recent-text'>email</span>
+                  <span className='most-recent-text'>note</span>
+                  <span className='most-recent-text'>Date</span>
                 </div>
               </>
             ) : (
-              <div className="profile-no-data-container">
+              <div className='profile-no-data-container'>
                 <p>no notes to show yet</p>
               </div>
             )}
 
-            <ul className="most-recent-customers">
+            <ul className='most-recent-customers'>
               {notes &&
                 notes.map(({ id, data }) => (
-                  <li key={id} className="most-recent-customers-items">
-                    <span className="most-recent-email-info">{data.customerName}</span>
-                    <span className="most-recent-email-info">{data.customerEmail}</span>
-                    <span className="most-recent-email-info">{data.noteText}</span>
-                    <span className="most-recent-email-info">{data.dateOfNote}</span>
+                  <li key={id} className='most-recent-customers-items'>
+                    <span className='most-recent-email-info'>
+                      {data.customerName}
+                    </span>
+                    <span className='most-recent-email-info'>
+                      {data.customerEmail}
+                    </span>
+                    <span className='most-recent-email-info'>
+                      {data.noteText}
+                    </span>
+                    <span className='most-recent-email-info'>
+                      {data.dateOfNote}
+                    </span>
                   </li>
                 ))}
             </ul>
           </div>
 
-          <div className="profile-dash profile-grid-item">
-            <p className="profile-btn-container">
+          <div className='profile-dash profile-grid-item'>
+            <p className='profile-btn-container'>
               <Link
-                className="profile-btns"
+                className='profile-btns'
                 to={`/new-customer?agentName=${auth.currentUser.displayName}&agentId=${auth.currentUser.uid}`}
               >
                 NEW CUSTOMER
               </Link>
-              <Link className="profile-btns" to={`/stats/${params.uid}`}>
+              <Link className='profile-btns' to={`/stats/${params.uid}`}>
                 COMPANY STATS
               </Link>
-              <Link className="profile-btns" to={`/data/${agentId}`}>
+              <Link className='profile-btns' to={`/data/${agentId}`}>
                 VIEW ALL CUSTOMERS
               </Link>
             </p>
-            <div className="taskList">
+            <div className='taskList'>
               <AgentToDoList />
             </div>
           </div>
-          <div className="agentStats-container profile-grid-item">
-            <div className="agent-stats-header-container">
-              <p className="agent-stats-text">
+          <div className='agentStats-container profile-grid-item'>
+            <div className='agent-stats-header-container'>
+              <p className='agent-stats-text'>
                 <span>Top 3 accounts stats at a glance</span>
               </p>
             </div>

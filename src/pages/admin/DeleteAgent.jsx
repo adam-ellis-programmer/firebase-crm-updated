@@ -45,6 +45,8 @@ const DeleteAgent = ({ data, checkTestUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+
     if (checkTestUser()) {
       return
     }
@@ -63,6 +65,8 @@ const DeleteAgent = ({ data, checkTestUser }) => {
         agentId: formData.agentId,
         handBackData: formData.handBackData,
       })
+
+      
       handleReset()
       console.log(data)
       handleLoading('delete', false)

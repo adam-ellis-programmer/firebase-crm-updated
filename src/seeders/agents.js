@@ -1,0 +1,42 @@
+export const agents = [
+  {
+    email: 'louise@gmail.com',
+    firstName: 'Louise',
+    lastName: 'Ellis',
+    password: '111111',
+    role: 'ADMIN',
+    roleLevel: 3,
+  },
+  {
+    email: 'james@gmail.com',
+    firstName: 'James',
+    lastName: 'Wilson',
+    password: '111111',
+    role: 'ADMIN',
+    roleLevel: 3,
+  },
+  {
+    email: 'sarah@gmail.com',
+    firstName: 'Sarah',
+    lastName: 'Johnson',
+    password: '111111',
+    role: 'ADMIN',
+    roleLevel: 3,
+  },
+  {
+    email: 'michael@gmail.com',
+    firstName: 'Michael',
+    lastName: 'Brown',
+    password: '111111',
+    role: 'ADMIN',
+    roleLevel: 3,
+  },
+  {
+    email: 'emily@gmail.com',
+    firstName: 'Emily',
+    lastName: 'Davis',
+    password: '111111',
+    role: 'ADMIN',
+    roleLevel: 3,
+  },
+]

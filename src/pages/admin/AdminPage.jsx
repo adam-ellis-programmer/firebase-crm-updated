@@ -39,7 +39,7 @@ function AdminPage() {
 
     getData()
     return () => {}
-  }, [claims])
+  }, [claims, claims?.claims?.orgId])
 
   return (
     <div>
@@ -83,7 +83,7 @@ function AdminPage() {
             <p>Active Agents</p>
           </div>
 
-          <div className='user-list-container'>
+          <div className='user-list-container  '>
             {loading ? (
               <Loader />
             ) : (

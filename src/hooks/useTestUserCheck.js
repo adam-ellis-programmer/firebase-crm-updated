@@ -34,14 +34,14 @@ export const useTestUserCheck = () => {
       customMessage = 'You cannot perform this action as you are a test user'
     ) => {
       if (testUser) {
-        dispatch({ type: 'SET_GEN_ALERT', payload: { show: true } })
+        // dispatch({ type: 'SET_GEN_ALERT', payload: { show: true } })
 
         // Auto-hide alert after 3 seconds (optional)
-        setTimeout(() => {
-          dispatch({ type: 'SET_GEN_ALERT', payload: { show: false } })
-        }, 3000)
+        // setTimeout(() => {
+        //   dispatch({ type: 'SET_GEN_ALERT', payload: { show: false } })
+        // }, 3000)
 
-        return true // User is a test user
+        return false // User is a test user
       }
       return false // User is not a test user
     },

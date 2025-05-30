@@ -15,8 +15,11 @@ import {
   getAgentToDisplayChangeUpdateTaskLengthData,
 } from '../crm context/CrmAction'
 import Loader from '../assets/Loader'
+import { useTestUserCheck } from '../hooks/useTestUserCheck'
 
 function AgentToDoList() {
+  const { checkTestUser } = useTestUserCheck()
+
   const auth = getAuth()
 
   const [markingDone, setMarkingDone] = useState(false)
@@ -88,6 +91,14 @@ function AgentToDoList() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if (checkTestUser()) {
+      return
+    }
+
+    if (checkTestUser()) {
+      return
+    }
+
     if (month > 12) {
       console.log('month cannot be more than 12')
       return
@@ -111,12 +122,13 @@ function AgentToDoList() {
 
     try {
       await addTaskToDatabase('tasks', newData)
-      const updatedData = await getTasksToDisplayInAgentProfile('tasks', params.uid)
-
-      const agentProfileData = await getAgentToDisplayChangeUpdateTaskLengthData(
-        'users',
+      const updatedData = await getTasksToDisplayInAgentProfile(
+        'tasks',
         params.uid
       )
+
+      const agentProfileData =
+        await getAgentToDisplayChangeUpdateTaskLengthData('users', params.uid)
 
       const updatedTaskLength = {
         ...agentProfileData[0]?.data,
@@ -140,7 +152,9 @@ function AgentToDoList() {
       const newData = await getTasksToDisplayInAgentProfile('tasks', params.uid)
       console.log(newData)
 
-      const filteredData = newData.filter((item) => item.data.completed === false)
+      const filteredData = newData.filter(
+        (item) => item.data.completed === false
+      )
       console.log(filteredData.length)
 
       setTasks(newData)
@@ -158,10 +172,8 @@ function AgentToDoList() {
     setTasks(updatedData)
 
     try {
-      const getAgentProfileToUpdate = await getAgentToDisplayChangeUpdateTaskLengthData(
-        'users',
-        params.uid
-      )
+      const getAgentProfileToUpdate =
+        await getAgentToDisplayChangeUpdateTaskLengthData('users', params.uid)
 
       const updateUserProfileTaskLength = {
         ...getAgentProfileToUpdate[0]?.data,
@@ -178,96 +190,104 @@ function AgentToDoList() {
     return <Loader />
   }
   return (
-    <div className="agent-task-list-container">
-      <p className="task-list-heading">
-        <span className="task-head-span">Hey {agentName}! Enter a new task</span>
+    <div className='agent-task-list-container'>
+      <p className='task-list-heading'>
+        <span className='task-head-span'>
+          Hey {agentName}! Enter a new task
+        </span>
       </p>
 
-      <div className="agent-task-form-wrap">
-        <form onSubmit={handleSubmit} className="todo-form">
+      <div className='agent-task-form-wrap'>
+        <form onSubmit={handleSubmit} className='todo-form'>
           <textarea
             onChange={onMutateTextArea}
-            className="task-list-input-text"
-            placeholder="Enter Task and completed date"
-            id="taskText"
+            className='task-list-input-text'
+            placeholder='Enter Task and completed date'
+            id='taskText'
             value={taskText}
           ></textarea>
-          <div className="date-container">
-            <span className="task-chars-length">{taskLength} chars</span>
+          <div className='date-container'>
+            <span className='task-chars-length'>{taskLength} chars</span>
             <div>{chars - taskLength} remaining</div>
 
-            <div className="completed-by-container">
-              <div className="task-date-heading">
-                <span className="to-be-completed-span">completed by: </span>
+            <div className='completed-by-container'>
+              <div className='task-date-heading'>
+                <span className='to-be-completed-span'>completed by: </span>
               </div>
 
-              <div className="task-inputs">
+              <div className='task-inputs'>
                 {' '}
                 <input
                   onChange={onMutate}
-                  className="task-list-input-date"
-                  type="text"
-                  id="day"
-                  placeholder="dd"
+                  className='task-list-input-date'
+                  type='text'
+                  id='day'
+                  placeholder='dd'
                   value={day}
                 />
                 <input
                   onChange={onMutate}
-                  className="task-list-input-date"
-                  type="text"
-                  id="month"
-                  placeholder="mm"
+                  className='task-list-input-date'
+                  type='text'
+                  id='month'
+                  placeholder='mm'
                   value={month}
                 />
                 <input
                   onChange={onMutate}
-                  className="task-list-input-date"
-                  type="text"
-                  id="year"
-                  placeholder="yy"
+                  className='task-list-input-date'
+                  type='text'
+                  id='year'
+                  placeholder='yy'
                   value={year}
                 />
               </div>
             </div>
           </div>
 
-          <div className="task-list-button-container">
-            <button className="task-list-button">enter task</button>
+          <div className='task-list-button-container'>
+            <button className='task-list-button'>enter task</button>
           </div>
         </form>
       </div>
       {/* to do: loop to find outstanding tasks */}
-      <div className="task-list-container">
-        <p className="task-list-heading">
-          <span className="agent-task-name-span">
+      <div className='task-list-container'>
+        <p className='task-list-heading'>
+          <span className='agent-task-name-span'>
             Agent Task List For {agentName}
-            <span className="agent-task-length-span">{tasksLength}</span>
+            <span className='agent-task-length-span'>{tasksLength}</span>
           </span>
         </p>
 
-        <ul className="task-list-ul">
+        <ul className='task-list-ul'>
           {!loading &&
             tasks &&
             tasks.map(({ data, id }) => (
               <li
                 key={id}
-                className={data.completed ? ' task-item-com task-item' : 'task-item'}
+                className={
+                  data.completed ? ' task-item-com task-item' : 'task-item'
+                }
               >
-                {data.completed && <Check fill="green" className="check-box" />}
-                <div className="task-date-container">
+                {data.completed && <Check fill='green' className='check-box' />}
+                <div className='task-date-container'>
                   <p>
                     {' '}
                     <span>completed by: </span> {data.formattedDate}
                   </p>
                 </div>
-                <div className="task-text">
-                  <p className={data.completed ? 'strike-text' : ''}>{data.taskText}</p>
+                <div className='task-text'>
+                  <p className={data.completed ? 'strike-text' : ''}>
+                    {data.taskText}
+                  </p>
                 </div>
 
-                <div className="task-list-buttons-container">
+                <div className='task-list-buttons-container'>
                   <button
                     onClick={() => toggleCompleted(id)}
-                    className={data.completed ? 'task-button-completed' : 'task-button'}
+                    className={
+                      data.completed ? 'task-button-completed' : 'task-button'
+                    }
                     disabled={markingDone}
                   >
                     {markingDone
@@ -276,7 +296,10 @@ function AgentToDoList() {
                       ? 'Completed'
                       : 'Mark as done'}
                   </button>
-                  <button onClick={() => handleTaskDelete(id)} className="task-button">
+                  <button
+                    onClick={() => handleTaskDelete(id)}
+                    className='task-button'
+                  >
                     delete
                   </button>
                 </div>
