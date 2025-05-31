@@ -57,10 +57,8 @@ const createCustomer = async (
   const custId = crypto.randomUUID()
 
   // Make email unique by adding agent info and customer index
-  const uniqueEmail = customerTemplate.email.replace(
-    '@',
-    `+${agent.data.firstName.toLowerCase()}${customerIndex}@`
-  )
+  // prettier-ignore
+  const uniqueEmail = customerTemplate.email.replace('@', `+${agent.data.firstName.toLowerCase()}${customerIndex}@`)
 
   // Get geolocation data
   const locationData = await getGeoLocation(customerTemplate.address)

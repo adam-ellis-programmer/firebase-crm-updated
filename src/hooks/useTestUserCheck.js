@@ -14,7 +14,6 @@ export const useTestUserCheck = () => {
       if (user) {
         // User is signed in - get their custom claims
         user.getIdTokenResult(true).then((data) => {
-          console.log(data)
           setTestUser(data?.claims?.claims?.testUser || false)
           setLoading(false)
         })

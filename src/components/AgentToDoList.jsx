@@ -22,7 +22,8 @@ function AgentToDoList() {
 
   const auth = getAuth()
 
-  const [markingDone, setMarkingDone] = useState(false)
+  // Changed: Track loading state per task ID instead of single state
+  const [markingDone, setMarkingDone] = useState({})
   const [loading, setLoading] = useState(true)
   const chars = 300
   const [tasksLength, setTasksLength] = useState(0)
@@ -72,11 +73,31 @@ function AgentToDoList() {
   ]
   const { taskText, day, month, year, taskLength } = formData
 
-  const onMutate = (e) => {
+  const onMutateDate = (e) => {
+    const value = e.target.value.slice(0, 2)
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.id]: e.target.value.slice(0, 2),
+      [e.target.id]: value,
     }))
+
+    // Auto-focus to next input when 2 digits are entered
+    if (value.length === 2) {
+      const currentId = e.target.id
+      let nextInputId = null
+
+      if (currentId === 'day') {
+        nextInputId = 'month'
+      } else if (currentId === 'month') {
+        nextInputId = 'year'
+      }
+
+      if (nextInputId) {
+        const nextInput = document.getElementById(nextInputId)
+        if (nextInput) {
+          nextInput.focus()
+        }
+      }
+    }
   }
 
   // charactor count for text area
@@ -143,29 +164,41 @@ function AgentToDoList() {
   }
 
   const toggleCompleted = async (id) => {
-    setMarkingDone(true)
+    if (checkTestUser()) {
+      return
+    }
+
+    // Changed: Set loading state for specific task ID
+    setMarkingDone((prev) => ({ ...prev, [id]: true }))
+
     try {
       const data = await getTaskToToggleCompleted(id, 'tasks')
       await updateTaskToCompleted(id, data.completed === false ? true : false)
       await getTaskToToggleCompleted(id, 'tasks')
 
       const newData = await getTasksToDisplayInAgentProfile('tasks', params.uid)
-      console.log(newData)
+
 
       const filteredData = newData.filter(
         (item) => item.data.completed === false
       )
-      console.log(filteredData.length)
+      // console.log(filteredData.length)
 
       setTasks(newData)
-      setMarkingDone(false)
-      // console.log(chars - taskLength) // e.target.value.slice
+
+      // Changed: Clear loading state for specific task ID
+      setMarkingDone((prev) => ({ ...prev, [id]: false }))
     } catch (error) {
       console.log(error)
+      // Changed: Clear loading state on error too
+      setMarkingDone((prev) => ({ ...prev, [id]: false }))
     }
   }
 
   const handleTaskDelete = async (id) => {
+    if (checkTestUser()) {
+      return
+    }
     // return
     await deleteDoc(doc(db, 'tasks', id))
     const updatedData = tasks.filter((item) => item.id !== id)
@@ -189,6 +222,8 @@ function AgentToDoList() {
   if (loading) {
     return <Loader />
   }
+
+  console.log(markingDone)
   return (
     <div className='agent-task-list-container'>
       <p className='task-list-heading'>
@@ -218,7 +253,7 @@ function AgentToDoList() {
               <div className='task-inputs'>
                 {' '}
                 <input
-                  onChange={onMutate}
+                  onChange={onMutateDate}
                   className='task-list-input-date'
                   type='text'
                   id='day'
@@ -226,7 +261,7 @@ function AgentToDoList() {
                   value={day}
                 />
                 <input
-                  onChange={onMutate}
+                  onChange={onMutateDate}
                   className='task-list-input-date'
                   type='text'
                   id='month'
@@ -234,7 +269,7 @@ function AgentToDoList() {
                   value={month}
                 />
                 <input
-                  onChange={onMutate}
+                  onChange={onMutateDate}
                   className='task-list-input-date'
                   type='text'
                   id='year'
@@ -288,9 +323,10 @@ function AgentToDoList() {
                     className={
                       data.completed ? 'task-button-completed' : 'task-button'
                     }
-                    disabled={markingDone}
+                    disabled={markingDone[id]}
                   >
-                    {markingDone
+                    {/* Changed: Check loading state for specific task ID */}
+                    {markingDone[id]
                       ? 'Updating...'
                       : data.completed
                       ? 'Completed'

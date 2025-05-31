@@ -38,7 +38,7 @@ import CrmContext from './crm context/CrmContext'
 
 function AppContent() {
   const { showGlobalAlert } = useContext(CrmContext)
-  console.log('from main AppContent', showGlobalAlert)
+
   const [toggleNav, setToggleNav] = useState(false)
   return (
     <div className='main-wrap relative'>
