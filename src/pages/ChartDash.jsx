@@ -116,8 +116,8 @@ const ChartDash = () => {
        </div>
       </section>
 
-      <section className='chart-dash-section'>
-        <div>
+      <section className='chart-dash-section '>
+        <div className=''>
           {/* sales by company */}
           <Chart />
         </div>

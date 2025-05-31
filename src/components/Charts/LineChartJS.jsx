@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from 'recharts'
 import { getAllOrders } from '../../crm context/CrmAction'
 import Loader from '../../assets/Loader'
@@ -63,29 +64,79 @@ const LineChartJS = () => {
     getData()
   }, [])
 
-  // Separate data transformation for the chart
-  const chartData = Array.from(monthlyData || [], (item) => ({
-    month: item.month,
-    sales: item.totalSales,
-  }))
+  // Enhanced data transformation for the chart with better month labels
+  const chartData = Array.from(monthlyData || [], (item) => {
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ]
+    const monthLabel = `${monthNames[parseInt(item.month) - 1]} ${item.year}`
+
+    return {
+      month: monthLabel,
+      sales: item.totalSales,
+      orderCount: item.orderCount,
+    }
+  })
 
   if (loading) {
     return <Loader />
   }
 
   return (
-    <div>
+    <div className='w-full'>
       <div className='chart-page-sub-header-div'>
         <p>sales by month</p>
       </div>
-      <LineChart width={500} height={300} data={chartData}>
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='month' padding={{ left: 30, right: 30 }} />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type='monotone' dataKey='sales' stroke='#82ca9d' />
-      </LineChart>
+      <div className='w-full h-96'>
+        <ResponsiveContainer width='100%' height='100%'>
+          <LineChart
+            data={chartData}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 20,
+            }}
+          >
+            <CartesianGrid strokeDasharray='3 3' />
+            <XAxis
+              dataKey='month'
+              angle={-45}
+              textAnchor='end'
+              interval={0}
+              height={80}
+            />
+            <YAxis tickFormatter={(value) => `$${value.toLocaleString()}`} />
+            <Tooltip
+              formatter={(value, name) => [
+                `$${value.toLocaleString()}`,
+                'Sales',
+              ]}
+              labelFormatter={(label) => `Month: ${label}`}
+            />
+            <Legend />
+            <Line
+              type='monotone'
+              dataKey='sales'
+              stroke='#82ca9d'
+              strokeWidth={3}
+              dot={{ fill: '#82ca9d', strokeWidth: 2, r: 4 }}
+              activeDot={{ r: 6, stroke: '#82ca9d', strokeWidth: 2 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   )
 }

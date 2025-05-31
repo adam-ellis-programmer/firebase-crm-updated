@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react'
 import CrmContext from '../crm context/CrmContext'
 import { toast } from 'react-toastify'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import DemoButton from './buttons/DemoButton'
 
 function AgentLogInForm() {
   const { navLoginLogoutControl, dispatch, showPasswordResetModal } =
@@ -11,10 +12,10 @@ function AgentLogInForm() {
   const auth = getAuth()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
-    email: 'test-user@test.com',
-    password: '111111',
+    email: '',
+    password: '',
   })
-  // test funcito
+  // test funciton
   // useEffect(() => {
   //   window.addEventListener('click', (e) => {
   //     if (!e.target.classList.contains('show-password-button')) {
@@ -101,13 +102,16 @@ function AgentLogInForm() {
           </div>
 
           <div className='agent-login-button-container'>
-            <button className='agent-login-button'>Login</button>
             <button
               onClick={handleShowPasswordResetModal}
               className='agent-login-button forgot-password-login-page'
             >
               {showPasswordResetModal ? 'just log in' : 'forgot password'}
             </button>
+            <div className='flex'>
+              {/* <DemoButton /> */}
+              <button className='agent-login-button'>Login</button>
+            </div>
           </div>
         </form>
       </div>

@@ -7,12 +7,14 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from 'recharts'
 import {
   getAllCustomersForProfilePageCompanyStats,
   sumByCompany,
 } from '../../crm context/CrmAction'
 import Loader from '../../assets/Loader'
+
 const data = [
   {
     company: 'gmail',
@@ -48,40 +50,47 @@ const Chart = () => {
 
     getCompanyStats()
   }, [])
-  // bar-chart-container
 
   if (loading) {
     return <Loader />
   }
+
   return (
-    <div className=''>
+    <div className='w-full'>
       <div className='chart-page-sub-header-div'>
         <p>sales by company (top 20)</p>
       </div>
-      <BarChart
-        width={500}
-        height={300}
-        data={newArr.slice(0, 20)}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='company' />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar
-          dataKey='spent'
-          radius={[5, 5, 0, 0]}
-          fill='#313562'
-          background={{ fill: '#eee' }}
-        />
-        {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
-      </BarChart>
+      <div className='w-full h-96'>
+        <ResponsiveContainer width='100%' height='100%'>
+          <BarChart
+            data={newArr.slice(0, 20)}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray='3 3' />
+            <XAxis
+              dataKey='company'
+              angle={-45}
+              textAnchor='end'
+              interval={4}
+              height={80}
+            />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar
+              dataKey='spent'
+              radius={[5, 5, 0, 0]}
+              fill='#313562'
+              background={{ fill: '#eee' }}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   )
 }
