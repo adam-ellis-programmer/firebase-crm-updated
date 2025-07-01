@@ -43,6 +43,7 @@ function AdminPage() {
 
   return (
     <div>
+      {/* seeder buttons in add new agent component */}
       <div className='admin-grid'>
         <div className='agent-sign-up agent-sign-up-left'>
           <div className='agent-inner-div-text'>

@@ -16,10 +16,10 @@ const NewAgent = ({ data, checkTestUser }) => {
   // GET ALL AGENTS WHERE ROLE > 1
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    firstName: 'Fiona',
-    lastName: 'Ellis',
-    email: 'fiona@gmail.com',
-    password: '111111',
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
     reportsTo: null,
     role: '',
     roleLevel: 0,
@@ -92,10 +92,10 @@ const NewAgent = ({ data, checkTestUser }) => {
 
     console.log(formData)
 
-    return
     if (checkTestUser()) {
       return
     }
+    // return
 
     // return
     setLoading(true)
@@ -140,7 +140,7 @@ const NewAgent = ({ data, checkTestUser }) => {
 
   return (
     <div>
-      <SeederButtons />
+      {/* <SeederButtons /> */}
       <form onSubmit={handleSubmit} className='admin-form'>
         <ComponentHeader text={`add new agent`} />
         {/* Slice from index 0 to 4 to get only firstName, lastName, email, and password */}
